@@ -5,6 +5,7 @@ class World {
         new PufferFish(),
         new PufferFish(),
         new JellyFish(),
+        new JellyFish(),
         new JellyFish()
     ];
     backgroundObjects = [
