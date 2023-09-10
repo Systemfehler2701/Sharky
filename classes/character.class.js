@@ -1,8 +1,7 @@
 class Character extends MovableObject {
-
     width = 250;
     height = 250;
-
+    speed = 5;
     IMAGES_SWIMMING = [
         'img/1.Sharkie/3.Swim/1.png',
         'img/1.Sharkie/3.Swim/2.png',
@@ -11,6 +10,7 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
     ];
+    world;
 
     constructor() {
         super().loadImage('img/1.Sharkie/3.Swim/1.png', );
@@ -19,12 +19,29 @@ class Character extends MovableObject {
     }
     animate() {
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_SWIMMING.length; //let i = 7 % 6; => 1, Rest 1
-            // i= 0, 1, 2, 3, 4, 5, 0
-            let path = this.IMAGES_SWIMMING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 100);
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                this.x += this.speed;
+                this.otherDirection = false;
+            }
+            if (this.world.keyboard.LEFT && this.x > 100) {
+                this.x -= this.speed;
+                this.otherDirection = true;
+            }
+            if (this.world.keyboard.UP) {
+                this.y -= this.speed;
+            }
+            if (this.world.keyboard.DOWN) {
+                this.y += this.speed;
+            }
+            this.world.camera_x = -this.x + 100;
+        }, 1000 / 60);
+
+        setInterval(() => {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+                this.playAnimation(this.IMAGES_SWIMMING);
+
+            }
+        }, 50);
     }
 
 
