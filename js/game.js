@@ -5,11 +5,13 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
-    console.log('My Character is', world.character);
 }
 
 window.addEventListener('keydown', (event) => {
+    if (world.stopUserInput) {
+        keyboard.LEFT = keyboard.RIGHT = keyboard.UP = keyboard.DOWN = keyboard.D = keyboard.SPACE = false;
+        return;
+    }
     if (event.code == "ArrowLeft") {
         keyboard.LEFT = true;
     }

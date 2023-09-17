@@ -1,17 +1,14 @@
-class BackgroundObject extends MovableObject {
+class Light extends MovableObject {
+    y = 0;
     x_offset;
-    width = 720;
+    width = 2880;
     height = 480;
     constructor(imagePath, x, speed) {
         super().loadImage(imagePath);
-        this.y = 480 - this.height;
         this.x_offset = x;
         this.x = this.x_offset;
-        if (speed != undefined) {
-            this.speed = speed;
-            this.animate();
-        }
-
+        this.speed = speed;
+        this.animate();
     }
 
     animate() {

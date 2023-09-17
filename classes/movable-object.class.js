@@ -1,13 +1,13 @@
 class MovableObject {
-    x = 100;
-    y = 100;
+    x;
+    y;
     img;
     height = 80;
     width = 80;
     speed = 0.15;
     imageCache = [];
     currentImage = 0;
-    amplitude = 1; // Amplitude der Sinuswelle
+    amplitude = 2; // Amplitude der Sinuswelle
     frequency = 1; // Frequenz der Sinuswelle (in Hz)
     time = 0;
     otherDirection = false;
@@ -37,10 +37,14 @@ class MovableObject {
             this.x -= this.speed;
         }, 1000 / 60);
     }
+    moveRight() {
+        setInterval(() => {
+            this.x += this.speed;
+        }, 1000 / 60);
+    }
     moveUp() {
         setInterval(() => {
             this.y -= this.speed;
-            this.x -= this.speed;
         }, 1000 / 60);
     }
     moveDown() {

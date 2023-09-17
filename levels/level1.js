@@ -1,46 +1,68 @@
-myBackgroundObjects = [];
-
-function addBackgroundObjects(length) {
-    for (let i = 0; i < length; i++) {
-        let temp = [
-            new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 0 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 0 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 0 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 0 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/1. Light/1.png', 0 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 720 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 720 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 720 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 720 + i * 1440),
-            new BackgroundObject('img/3. Background/Layers/1. Light/2.png', 720 + i * 1440)
-        ];
-        myBackgroundObjects = myBackgroundObjects.concat(temp);
-    }
-
-}
-addBackgroundObjects(4);
-
 const level1 = new Level(
     [
-        new PufferFish(),
-        new PufferFish(),
-        new PufferFish(),
-        new JellyFish(),
-        new JellyFish(),
-        new JellyFish(),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(0),
+        new PufferFish(2),
+        new PufferFish(2),
+        new PufferFish(2),
+        new PufferFish(2),
+        new PufferFish(2),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(1),
+        new JellyFish(2),
+        new JellyFish(2),
+        new JellyFish(2),
+        new JellyFish(2),
+        new JellyFish(2),
         new Endboss()
-    ],
-    /*[
-           new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 0),
-           new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 0),
-           new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 0),
-           new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 0),
-           new BackgroundObject('img/3. Background/Layers/1. Light/1.png', 0),
-           new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 720),
-           new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 720),
-           new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 720),
-           new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 720),
-           new BackgroundObject('img/3. Background/Layers/1. Light/2.png', 720)
-       ]*/
-    myBackgroundObjects
+    ], [
+        new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 0),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 720),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 1440),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 2160),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 2880),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 3600),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D1.png', 4320),
+        new BackgroundObject('img/3. Background/Layers/5. Water/D2.png', 5040),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 0, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 720, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 1440, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 2160, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 2880, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 3600, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D1.png', 4320, 0.1),
+        new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D2.png', 5040, 0.1),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 0, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 720, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 1440, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 2160, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 2880, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 3600, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D1.png', 4320, 0.3),
+        new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D2.png', 5040, 0.3),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 0),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 720),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 1440),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 2160),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 2880),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 3600),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D1.png', 4320),
+        new BackgroundObject('img/3. Background/Layers/2. Floor/D2.png', 5040)
+    ], [
+        new Light('img/3. Background/Layers/1. Light/COMPLETO.png', 200, 0.50),
+
+    ]
+
 );

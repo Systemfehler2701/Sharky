@@ -1,7 +1,10 @@
 class Endboss extends MovableObject {
     width = 400;
     height = 400;
-    IMAGES_INTRO = [
+    endbossSpawned = false;
+
+
+    IMAGES_SPAWNING = [
         'img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
         'img/2.Enemy/3 Final Enemy/1.Introduce/2.png',
         'img/2.Enemy/3 Final Enemy/1.Introduce/3.png',
@@ -30,17 +33,38 @@ class Endboss extends MovableObject {
     ]
 
     constructor() {
-        super().loadImage(this.IMAGES_SWIMMING[0]);
+        super().loadImage(this.IMAGES_SPAWNING[0]);
         this.loadImages(this.IMAGES_SWIMMING);
-        this.x = 700;
+        this.loadImages(this.IMAGES_SPAWNING);
+        this.x = 5400;
         this.y = 0;
         this.animate();
     }
+
     animate() {
-        this.moveLeft();
+        let i = 0;
         setInterval(() => {
-            this.playAnimation(this.IMAGES_SWIMMING);
+            if (this.endbossSpawned) {
+                if (i < 10) {
+                    this.playAnimation(this.IMAGES_SPAWNING);
+                } else {
+                    this.playAnimation(this.IMAGES_SWIMMING);
+                }
+                i++;
+                if (i == 10) {
+                    world.stopUserInput = false;
+                }
+            } else {
+                if (world != undefined && world.character != undefined && world.character.x > 4700 && !this.endbossSpawned) {
+                    world.stopUserInput = true;
+                    world.ctx.translate(-250, 0);
+                    this.endbossSpawned = true;
+                    world.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    this.moveLeft();
+                }
+            }
         }, 100);
     }
+
 
 }
