@@ -11,7 +11,6 @@ class BackgroundObject extends MovableObject {
             this.speed = speed;
             this.animate();
         }
-
     }
 
     animate() {

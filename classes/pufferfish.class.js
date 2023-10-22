@@ -1,5 +1,5 @@
 class PufferFish extends MovableObject {
-
+    offset = { x: 0, y: 0, width: -0, height: -0 };
     IMAGES_SWIMMING = [
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
@@ -7,13 +7,35 @@ class PufferFish extends MovableObject {
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim4.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim5.png'
     ];
-
+    IMAGES_TRANSITION = [
+        'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png'
+    ];
+    IMAGES_BUBBLE = [
+        'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim1.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim2.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim3.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim4.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim5.png'
+    ];
+    IMAGES_DEAD = [
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png',
+        'img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png',
+    ]
     constructor(spawnArea) {
         super().loadImage('img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png');
         this.loadImages(this.IMAGES_SWIMMING);
+        this.loadImages(this.IMAGES_TRANSITION);
+        this.loadImages(this.IMAGES_BUBBLE);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 400 + Math.random() * 1400 + spawnArea * 1700;
         this.y = 20 + Math.random() * 400;
         this.speed = 0.15 + Math.random() * 0.35;
+        this.name = "PufferFish";
         this.animate();
     }
     animate() {

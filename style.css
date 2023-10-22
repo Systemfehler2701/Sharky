@@ -1,5 +1,10 @@
 body {
-    background-color: gray;
+    margin: 0;
+    background-image: url(img/3.%20Background/Light/2.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     flex-direction: column;
