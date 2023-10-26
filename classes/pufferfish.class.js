@@ -1,5 +1,5 @@
 class PufferFish extends MovableObject {
-    offset = { x: 0, y: 0, width: -0, height: -0 };
+    offset = { x: 5, y: 10, width: -20, height: -30 };
     IMAGES_SWIMMING = [
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
@@ -34,14 +34,14 @@ class PufferFish extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.x = 400 + Math.random() * 1400 + spawnArea * 1700;
         this.y = 20 + Math.random() * 400;
-        this.speed = 0.15 + Math.random() * 0.35;
+        this.speed = 0.10 + Math.random() * 0.35;
         this.name = "PufferFish";
         this.animate();
     }
     animate() {
         this.moveLeft();
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.playAnimation(this.IMAGES_SWIMMING);
-        }, 100);
+        }, 100));
     }
 }

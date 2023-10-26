@@ -1,7 +1,7 @@
 class Flask extends MovableObject {
     height = 80;
     width = 60;
-    offset = { x: 0, y: 0, width: -0, height: -0 };
+    offset = { x: 10, y: 35, width: -20, height: -38 };
     IMAGES_FLASK = [
         'img/4. Marcadores/Posión/Animada/1.png',
         'img/4. Marcadores/Posión/Animada/2.png',

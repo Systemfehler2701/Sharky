@@ -5,8 +5,9 @@ class Character extends MovableObject {
     idleTime = new Date().getTime();
     x = 100;
     y = 100;
+
     world;
-    offset = { x: 50, y: 125, width: -100, height: -185 };
+    offset = { x: 55, y: 130, width: -110, height: -190 };
 
     IMAGES_STAYING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -127,7 +128,8 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        let i = 0;
+        addIntervalId(setInterval(() => {
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
@@ -148,15 +150,20 @@ class Character extends MovableObject {
             if (this.x > 5140) {
                 this.world.camera_x = this.world.level.cameraEnd_x;
             }
-        }, 1000 / 60);
+        }, 1000 / 60));
 
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_SHOCK_DEAD);
-                this.world.stopUserInput = true;
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_SHOCK);
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+                this.dyingAnimation(i);
+                return;
+            }
+            if (this.isHurt()) {
+                this.hurtAnimation();
+                return;
+            } else {
+                this.world.stopUserInput = false;
+            }
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
                 this.idleTime = new Date().getTime();
             } else if (new Date().getTime() - this.idleTime > 10000) {
@@ -167,8 +174,37 @@ class Character extends MovableObject {
             if (this.world.keyboard.SPACE) {
                 this.playAnimation(this.IMAGES_ATTACK);
             }
-        }, 180);
+        }, 180));
     }
 
+
+    //stopGame();
+
+    dyingAnimation(i) {
+        this.world.stopUserInput = true;
+        if (this.enemyType == 'poison') {
+            if (i < 12) {
+                this.playAnimation(this.IMAGES_POISON_DEAD);
+            } else {
+                stopGame();
+            }
+        } else {
+            if (i < 10) {
+                this.playAnimation(this.IMAGES_SHOCK_DEAD);
+            } else {
+                stopGame();
+            }
+        }
+        i++;
+    }
+
+    hurtAnimation() {
+        this.world.stopUserInput = true;
+        if (this.enemyType == 'poison') {
+            this.playAnimation(this.IMAGES_POISON);
+        } else {
+            this.playAnimation(this.IMAGES_SHOCK);
+        }
+    }
 
 }

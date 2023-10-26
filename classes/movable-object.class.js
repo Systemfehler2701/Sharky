@@ -13,6 +13,7 @@ class MovableObject {
     otherDirection = false;
     offset;
     name;
+    enemyType;
     energy = 100;
     lastHit = 0;
     loadImage(path) {
@@ -35,6 +36,9 @@ class MovableObject {
     }
 
     isColliding(obj) {
+        if (this.isHurt() || this.isDead()) {
+            return false;
+        }
         let objectHitbox = {
             x: obj.x + obj.offset.x,
             y: obj.y + obj.offset.y,
@@ -48,7 +52,8 @@ class MovableObject {
         //obj.onCollisionCourse;
     }
 
-    hit() {
+    hit(enemyType) {
+        this.enemyType = enemyType;
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
@@ -96,31 +101,31 @@ class MovableObject {
     }
 
     moveLeft() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.x -= this.speed;
-        }, 1000 / 60);
+        }, 1000 / 60));
     }
     moveRight() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.x += this.speed;
-        }, 1000 / 60);
+        }, 1000 / 60));
     }
     moveUp() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.y -= this.speed;
-        }, 1000 / 60);
+        }, 1000 / 60));
     }
     moveDown() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.y += this.speed;
-        }, 1000 / 60);
+        }, 1000 / 60));
     }
 
     moveSinus() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.y += this.amplitude * Math.sin(2 * Math.PI * this.frequency * this.time);
             this.x -= this.speed;
             this.time += 0.01;
-        }, 1000 / 60);
+        }, 1000 / 60));
     }
 }

@@ -120,7 +120,7 @@ class Endboss extends MovableObject {
 
     animate() {
         let i = 0;
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             if (this.endbossTrigger) {
                 if (this.endbossCameraRight) {
                     this.endbossCameraRight = false;
@@ -140,8 +140,6 @@ class Endboss extends MovableObject {
             } else {
                 this.triggerEndboss();
             }
-        }, 100);
+        }, 100));
     }
-
-
 }

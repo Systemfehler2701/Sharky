@@ -6,6 +6,8 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    statusBar;
+    bubble = [new Bubble()];
     gameSound = new Audio('audio/ukulele.wav');
 
     constructor(canvas, keyboard) {
@@ -23,29 +25,35 @@ class World {
     }
 
     checkCollisions() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) ||
                     enemy.isColliding(this.character)) {
-                    this.character.hit();
-                    console.log('Collision with Character, energy', this.character.energy);
+                    this.collideWithEnemy(enemy);
                 }
             });
             this.level.items.forEach((item) => {
                 if (this.character.isColliding(item) ||
                     item.isColliding(this.character)) {
-                    console.log('Collision with Character', item);
+                    this.collideWithItem(item);
                 }
             });
-        }, 200)
+        }, 200));
     }
 
     collideWithEnemy(enemy) {
+        if (enemy instanceof PufferFish || enemy instanceof Endboss) {
+            this.character.hit('poison');
+            console.log('Collision with Character', enemy.name + ' Poison');
+        } else if (enemy instanceof JellyFish) {
+            this.character.hit('electro');
+            console.log('Collision with Character', enemy.name + ' Electro');
+        }
 
     }
 
     collideWithItem(item) {
-
+        console.log('Collision with Character', item);
     }
 
     draw() {
@@ -56,6 +64,7 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.light);
         this.addObjectsToMap(this.level.items);
+        this.addObjectsToMap(this.bubble);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function() {

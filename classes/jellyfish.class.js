@@ -1,5 +1,5 @@
 class JellyFish extends MovableObject {
-    offset = { x: 0, y: 0, width: -0, height: -0 };
+    offset = { x: 5, y: 10, width: -10, height: -20 };
 
     IMAGES_SWIMMING = [
         'img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png',
@@ -27,15 +27,15 @@ class JellyFish extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.x = 300 + Math.random() * 1400 + spawnArea * 1700;
         this.y = 20 + Math.random() * 350;
-        this.speed = 0.15 + Math.random() * 0.50;
+        this.speed = 0.10 + Math.random() * 0.50;
         this.name = "JellyFish";
         this.animate();
     }
     animate() {
         this.moveSinus();
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.playAnimation(this.IMAGES_SWIMMING);
-        }, 100);
+        }, 100));
     }
 
 }
