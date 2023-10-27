@@ -7,7 +7,7 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar;
-    bubble = [new Bubble()];
+    bubble = [];
     gameSound = new Audio('audio/ukulele.wav');
 
     constructor(canvas, keyboard) {
@@ -16,7 +16,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
         //this.gameSound.play();
     }
 
@@ -24,21 +24,33 @@ class World {
         this.character.world = this;
     }
 
-    checkCollisions() {
+    run() {
         addIntervalId(setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy) ||
-                    enemy.isColliding(this.character)) {
-                    this.collideWithEnemy(enemy);
-                }
-            });
-            this.level.items.forEach((item) => {
-                if (this.character.isColliding(item) ||
-                    item.isColliding(this.character)) {
-                    this.collideWithItem(item);
-                }
-            });
+            this.checkCollisions();
         }, 200));
+    }
+
+
+    checkBubbleAttack() {
+        if (this.keyboard.SPACE) {
+            let bubble = new Bubble(this.character.x + 210, this.character.y + 110);
+            this.bubble.push(bubble);
+        }
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy) ||
+                enemy.isColliding(this.character)) {
+                this.collideWithEnemy(enemy);
+            }
+        });
+        this.level.items.forEach((item) => {
+            if (this.character.isColliding(item) ||
+                item.isColliding(this.character)) {
+                this.collideWithItem(item);
+            }
+        });
     }
 
     collideWithEnemy(enemy) {

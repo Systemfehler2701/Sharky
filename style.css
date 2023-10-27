@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-image: url(img/3.%20Background/Light/2.png);
+    background-image: url(img/3.%20Background/Legacy/Layers/5.%20Water/L2.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -8,6 +8,10 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+h1 {
+    margin: 80px 0 120px 0;
 }
 
 canvas {

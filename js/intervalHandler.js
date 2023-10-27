@@ -1,4 +1,5 @@
 let intervalIds = [];
+let world;
 
 function addIntervalId(id) {
     intervalIds.push(id);

@@ -23,8 +23,8 @@ class Flask extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        addIntervalId(setInterval(() => {
             this.playAnimation(this.IMAGES_FLASK);
-        }, 100);
+        }, 100));
     }
 }

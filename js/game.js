@@ -1,5 +1,4 @@
 let canvas;
-let world;
 let keyboard = new Keyboard();
 
 function init() {
@@ -25,7 +24,7 @@ window.addEventListener('keydown', (event) => {
         keyboard.UP = true;
     }
     if (event.code == "KeyC") {
-        keyboard.D = true;
+        keyboard.C = true;
     }
     if (event.code == "Space") {
         keyboard.SPACE = true;
@@ -46,7 +45,7 @@ window.addEventListener('keyup', (event) => {
         keyboard.UP = false;
     }
     if (event.code == "KeyC") {
-        keyboard.D = false;
+        keyboard.C = false;
     }
     if (event.code == "Space") {
         keyboard.SPACE = false;

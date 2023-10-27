@@ -16,6 +16,7 @@ class MovableObject {
     enemyType;
     energy = 100;
     lastHit = 0;
+    oldAnimationPath = "";
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
@@ -49,7 +50,6 @@ class MovableObject {
             this.isPointInHitbox({ x: objectHitbox.x + objectHitbox.width, y: objectHitbox.y }) ||
             this.isPointInHitbox({ x: objectHitbox.x, y: objectHitbox.y + objectHitbox.height }) ||
             this.isPointInHitbox({ x: objectHitbox.x + objectHitbox.width, y: objectHitbox.y + objectHitbox.height });
-        //obj.onCollisionCourse;
     }
 
     hit(enemyType) {
@@ -65,7 +65,7 @@ class MovableObject {
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 1;
+        return timepassed < 1.5;
     }
 
     isDead() {
@@ -94,6 +94,10 @@ class MovableObject {
     }
 
     playAnimation(images) {
+        if (this.oldAnimationPath == "" || this.oldAnimationPath != images[0]) {
+            this.currentImage = 0;
+            this.oldAnimationPath = images[0];
+        }
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];

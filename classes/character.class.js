@@ -5,9 +5,10 @@ class Character extends MovableObject {
     idleTime = new Date().getTime();
     x = 100;
     y = 100;
-
     world;
     offset = { x: 55, y: 130, width: -110, height: -190 };
+    lastShoot = 0;
+    shootImg = 0;
 
     IMAGES_STAYING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -53,7 +54,7 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
     ];
-    IMAGES_ATTACK = [
+    IMAGES_BUBBLE_ATTACK = [
         'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
         'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
         'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
@@ -118,7 +119,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_STAYING);
         this.loadImages(this.IMAGES_SLEEPING);
-        this.loadImages(this.IMAGES_ATTACK);
+        this.loadImages(this.IMAGES_BUBBLE_ATTACK);
         this.loadImages(this.IMAGES_ATTACK_WHALE);
         this.loadImages(this.IMAGES_POISON);
         this.loadImages(this.IMAGES_SHOCK);
@@ -150,11 +151,16 @@ class Character extends MovableObject {
             if (this.x > 5140) {
                 this.world.camera_x = this.world.level.cameraEnd_x;
             }
+            if (this.world.keyboard.SPACE) {
+                this.shoot();
+            }
+
         }, 1000 / 60));
 
         addIntervalId(setInterval(() => {
             if (this.isDead()) {
                 this.dyingAnimation(i);
+                i++;
                 return;
             }
             if (this.isHurt()) {
@@ -163,7 +169,9 @@ class Character extends MovableObject {
             } else {
                 this.world.stopUserInput = false;
             }
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+            if (this.isShooting()) {
+                this.bubbleAttack();
+            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
                 this.idleTime = new Date().getTime();
             } else if (new Date().getTime() - this.idleTime > 10000) {
@@ -171,17 +179,22 @@ class Character extends MovableObject {
             } else {
                 this.playAnimation(this.IMAGES_STAYING);
             }
-            if (this.world.keyboard.SPACE) {
-                this.playAnimation(this.IMAGES_ATTACK);
-            }
         }, 180));
     }
 
-
-    //stopGame();
+    bubbleAttack() {
+        if (this.shootImg < 8) {
+            this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
+            this.shootImg++;
+        } else {
+            this.world.checkBubbleAttack();
+            this.shootImg = 0;
+        }
+    }
 
     dyingAnimation(i) {
         this.world.stopUserInput = true;
+
         if (this.enemyType == 'poison') {
             if (i < 12) {
                 this.playAnimation(this.IMAGES_POISON_DEAD);
@@ -195,7 +208,6 @@ class Character extends MovableObject {
                 stopGame();
             }
         }
-        i++;
     }
 
     hurtAnimation() {
@@ -205,6 +217,20 @@ class Character extends MovableObject {
         } else {
             this.playAnimation(this.IMAGES_SHOCK);
         }
+    }
+
+    shoot() {
+        if (this.isShooting()) {
+            return;
+        }
+        this.shootImg = 0;
+        this.lastShoot = new Date().getTime();
+    }
+
+    isShooting() {
+        let timepassed = new Date().getTime() - this.lastShoot;
+        timepassed = timepassed / 1000;
+        return timepassed < 2;
     }
 
 }
