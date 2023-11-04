@@ -1,5 +1,5 @@
 class PufferFish extends MovableObject {
-    offset = { x: 5, y: 10, width: -20, height: -30 };
+    offset = { x: 5, y: 5, width: -20, height: -10 };
     IMAGES_SWIMMING = [
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png',
@@ -14,7 +14,7 @@ class PufferFish extends MovableObject {
         'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png'
     ];
-    IMAGES_BUBBLE = [
+    IMAGES_AGGRO = [
         'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim1.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim2.png',
         'img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/2.bubbleswim3.png',
@@ -30,18 +30,37 @@ class PufferFish extends MovableObject {
         super().loadImage('img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png');
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_TRANSITION);
-        this.loadImages(this.IMAGES_BUBBLE);
+        this.loadImages(this.IMAGES_AGGRO);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 400 + Math.random() * 1400 + spawnArea * 1700;
         this.y = 20 + Math.random() * 400;
         this.speed = 0.10 + Math.random() * 0.35;
-        this.name = "PufferFish";
         this.animate();
     }
     animate() {
-        this.moveLeft();
+        let transition = 0;
+        let deadAnimation = 0;
+        let moveLeftIntervalId = this.moveLeft();
         addIntervalId(setInterval(() => {
-            this.playAnimation(this.IMAGES_SWIMMING);
+            if (this.energy <= 0) {
+                clearInterval(moveLeftIntervalId);
+                if (deadAnimation == 0) {
+                    this.moveUp();
+                }
+                if (deadAnimation < 3) {
+                    this.playAnimation(this.IMAGES_DEAD);
+                    deadAnimation++;
+                }
+            } else if (this.isAggro) {
+                if (transition < 5) {
+                    this.playAnimation(this.IMAGES_TRANSITION);
+                    transition++;
+                } else {
+                    this.playAnimation(this.IMAGES_AGGRO);
+                }
+            } else {
+                this.playAnimation(this.IMAGES_SWIMMING);
+            }
         }, 100));
     }
 }

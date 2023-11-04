@@ -67,7 +67,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_SPAWNING);
         this.x = this.endbossSpawn_x;
         this.y = this.endbossSpawn_y;
-        this.name = "Endboss";
         this.animate();
     }
 

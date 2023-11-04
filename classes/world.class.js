@@ -7,8 +7,18 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar;
-    bubble = [];
+    bubbles = [];
+    collectedCoins = 0;
+    collectedFlasks = 0;
     gameSound = new Audio('audio/ukulele.wav');
+    flaskSound = new Audio('audio/plopp.wav');
+    coinSound = new Audio('audio/coin.wav');
+    bubbleSound = new Audio('audio/bubbles.wav');
+    shockSound = new Audio('audio/electroshock.wav');
+    loseSound = new Audio('audio/lose.wav');
+    winSound = new Audio('audio/win.wav');
+    poisonSound = new Audio('audio/poison.wav');
+    slapSound = new Audio('audio/slap.wav');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -17,6 +27,7 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
+        this.gameSound.loop = true;
         //this.gameSound.play();
     }
 
@@ -32,18 +43,32 @@ class World {
 
 
     checkBubbleAttack() {
-        if (this.keyboard.SPACE) {
-            let bubble = new Bubble(this.character.x + 210, this.character.y + 110);
-            this.bubble.push(bubble);
-        }
+        let bubbleStartX = this.character.otherDirection ? -10 : 200;
+        let bubble = new Bubble(this.character.x + bubbleStartX, this.character.y + 110, this.character.otherDirection);
+        this.bubbles.push(bubble);
+
     }
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) ||
-                enemy.isColliding(this.character)) {
-                this.collideWithEnemy(enemy);
+            if (!(this.character.isHurt() || this.character.isDead() || this.character.isInvincible())) {
+                if (this.character.isColliding(enemy) ||
+                    enemy.isColliding(this.character)) {
+                    this.collideWithEnemy(enemy);
+                }
             }
+            this.character.isInAggroRange(enemy);
+            this.bubbles.forEach((bubble) => {
+                if (bubble.isColliding(enemy) ||
+                    enemy.isColliding(bubble)) {
+                    console.log('lösche bubble und enemy');
+                    enemy.hit('bubble');
+                    const indexOfBubble = this.bubbles.indexOf(bubble);
+                    if (indexOfBubble !== -1) {
+                        this.bubbles.splice(indexOfBubble, 1);
+                    }
+                }
+            });
         });
         this.level.items.forEach((item) => {
             if (this.character.isColliding(item) ||
@@ -51,21 +76,47 @@ class World {
                 this.collideWithItem(item);
             }
         });
+
     }
 
     collideWithEnemy(enemy) {
         if (enemy instanceof PufferFish || enemy instanceof Endboss) {
+            this.poisonSound.play();
             this.character.hit('poison');
-            console.log('Collision with Character', enemy.name + ' Poison');
         } else if (enemy instanceof JellyFish) {
+            this.shockSound.play();
             this.character.hit('electro');
-            console.log('Collision with Character', enemy.name + ' Electro');
         }
+        let energyCounter = document.getElementById("energy-counter");
+        energyCounter.innerHTML = this.character.energy;
 
     }
 
     collideWithItem(item) {
-        console.log('Collision with Character', item);
+        const indexOfItem = this.level.items.indexOf(item);
+        if (indexOfItem !== -1) {
+            this.level.items.splice(indexOfItem, 1);
+            if (item instanceof Flask) {
+                this.collectFlask();
+            } else if (item instanceof Coin) {
+                this.collectCoin();
+            }
+        }
+    }
+
+    collectCoin() {
+        let coinCounter = document.getElementById("coin-counter");
+        this.coinSound.play();
+        this.collectedCoins++;
+        coinCounter.innerHTML = this.collectedCoins;
+    }
+
+
+    collectFlask() {
+        let flaskCounter = document.getElementById("flask-counter");
+        this.flaskSound.play();
+        this.collectedFlasks++;
+        flaskCounter.innerHTML = this.collectedFlasks;
     }
 
     draw() {
@@ -76,7 +127,7 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.light);
         this.addObjectsToMap(this.level.items);
-        this.addObjectsToMap(this.bubble);
+        this.addObjectsToMap(this.bubbles);
         this.ctx.translate(-this.camera_x, 0);
         let self = this;
         requestAnimationFrame(function() {

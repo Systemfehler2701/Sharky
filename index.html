@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="">
+    <link rel="icon" type="image/x-icon" href="img/2.Enemy/2 Jelly fish/Súper dangerous/Green 4.png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="font.css">
     <script src="js/intervalHandler.js"></script>
+    <script src="classes/drawable-object.class.js"></script>
     <script src="classes/movable-object.class.js"></script>
+    <script src="classes/status-bar.class.js"></script>
     <script src="classes/character.class.js"></script>
     <script src="classes/pufferfish.class.js"></script>
     <script src="classes/jellyfish.class.js"></script>
@@ -31,7 +34,14 @@
 
     <canvas id="canvas" width="720" height="480">
         
+         
+          
     </canvas>
+    <div class="status">
+        <div class="energy-status"><img src="img/4. Marcadores/green/100_  copia 3.png"><span id="energy-counter">5</span></div>
+        <div class="coin-status"><img src="img/4. Marcadores/green/100_ copia 6.png"><span id="coin-counter">0</span></div>
+        <div class="flask-status"><img src="img/4. Marcadores/Posión/Animada/1.png"><span id="flask-counter">0</span></div>
+    </div>
 </body>
 
 </body>

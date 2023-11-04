@@ -3,7 +3,7 @@ let world;
 
 function addIntervalId(id) {
     intervalIds.push(id);
-    console.log(id);
+    return id;
 }
 
 function stopGame() {

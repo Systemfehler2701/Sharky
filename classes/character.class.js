@@ -125,7 +125,9 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SHOCK);
         this.loadImages(this.IMAGES_POISON_DEAD);
         this.loadImages(this.IMAGES_SHOCK_DEAD);
+        this.energy = 5;
         this.animate();
+
     }
 
     animate() {
@@ -166,12 +168,8 @@ class Character extends MovableObject {
             if (this.isHurt()) {
                 this.hurtAnimation();
                 return;
-            } else {
-                this.world.stopUserInput = false;
             }
-            if (this.isShooting()) {
-                this.bubbleAttack();
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+            if (this.isShooting()) {} else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.playAnimation(this.IMAGES_SWIMMING);
                 this.idleTime = new Date().getTime();
             } else if (new Date().getTime() - this.idleTime > 10000) {
@@ -180,25 +178,20 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STAYING);
             }
         }, 180));
-    }
-
-    bubbleAttack() {
-        if (this.shootImg < 8) {
-            this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
-            this.shootImg++;
-        } else {
-            this.world.checkBubbleAttack();
-            this.shootImg = 0;
-        }
+        addIntervalId(setInterval(() => {
+            if (this.isShooting()) {
+                this.bubbleAttack();
+            }
+        }, 90));
     }
 
     dyingAnimation(i) {
         this.world.stopUserInput = true;
-
         if (this.enemyType == 'poison') {
             if (i < 12) {
                 this.playAnimation(this.IMAGES_POISON_DEAD);
             } else {
+                this.world.loseSound.play();
                 stopGame();
             }
         } else {
@@ -211,7 +204,6 @@ class Character extends MovableObject {
     }
 
     hurtAnimation() {
-        this.world.stopUserInput = true;
         if (this.enemyType == 'poison') {
             this.playAnimation(this.IMAGES_POISON);
         } else {
@@ -230,7 +222,17 @@ class Character extends MovableObject {
     isShooting() {
         let timepassed = new Date().getTime() - this.lastShoot;
         timepassed = timepassed / 1000;
-        return timepassed < 2;
+        return timepassed < 0.8;
     }
 
+    bubbleAttack() {
+        if (this.shootImg < 8) {
+            this.world.bubbleSound.play();
+            this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
+            this.shootImg++;
+        } else {
+            this.world.checkBubbleAttack();
+            this.shootImg = 0;
+        }
+    }
 }

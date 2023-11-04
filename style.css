@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-image: url(img/3.%20Background/Legacy/Layers/5.%20Water/L2.png);
+    background-image: url(img/unterwasser.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -8,6 +8,10 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: 'Luckiest Guy', cursive;
+    color: lightcoral;
+    font-size: 22px;
+    user-select: none;
 }
 
 h1 {
@@ -16,4 +20,93 @@ h1 {
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+@media only screen and (max-width:720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height:480px) {
+    canvas {
+        height: 100vh;
+    }
+}
+
+.status {
+    position: relative;
+    top: -485px;
+    display: flex;
+    width: 720px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+@media (max-width: 1000px) {
+    h1 {
+        margin: 20px 0 20px 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .status {
+        width: 100vw;
+        position: absolute;
+        top: 0px;
+    }
+    h1 {
+        display: none;
+    }
+    .energy-status,
+    .coin-status,
+    .flask-status {
+        font-size: 20px;
+    }
+    .status img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .energy-status img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-bottom: 10px;
+    }
+    .flask-status img {
+        width: 40px !important;
+        height: 55px !important;
+        margin-bottom: 25px;
+    }
+}
+
+.status span {
+    margin: 0 10px 0 0;
+}
+
+.energy-status,
+.coin-status,
+.flask-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
+}
+
+.status img {
+    width: 60px;
+    height: 60px;
+}
+
+.energy-status img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.flask-status img {
+    width: 50px;
+    height: 65px;
+    margin-bottom: 25px;
 }

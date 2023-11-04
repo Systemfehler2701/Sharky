@@ -77,14 +77,9 @@ const level1 = new Level(
         new Coin(4400, 150),
         new Coin(4500, 180),
         new Coin(4600, 250),
-        new Flask(100, 350),
         new Flask(1000, 380),
         new Flask(1900, 25),
-        new Flask(2100, 300),
-        new Flask(2700, 100),
         new Flask(3000, 230),
-        new Flask(3800, 380),
-        new Flask(4000, 200),
         new Flask(4360, 310),
         new Flask(4700, 60)
     ]
