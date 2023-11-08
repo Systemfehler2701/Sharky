@@ -42,7 +42,7 @@ class PufferFish extends MovableObject {
         let deadAnimation = 0;
         let moveLeftIntervalId = this.moveLeft();
         addIntervalId(setInterval(() => {
-            if (this.energy <= 0) {
+            if (this.isDead()) {
                 clearInterval(moveLeftIntervalId);
                 if (deadAnimation == 0) {
                     this.moveUp();

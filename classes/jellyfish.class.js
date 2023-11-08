@@ -34,7 +34,7 @@ class JellyFish extends MovableObject {
         let deadAnimation = 0;
         let moveSinusIntervalId = this.moveSinus();
         addIntervalId(setInterval(() => {
-            if (this.energy <= 0) {
+            if (this.isDead()) {
                 clearInterval(moveSinusIntervalId);
                 if (deadAnimation == 0) {
                     this.moveUp();

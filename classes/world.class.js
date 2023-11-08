@@ -6,11 +6,11 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar;
+    statusBar = new StatusBar();
     bubbles = [];
     collectedCoins = 0;
     collectedFlasks = 0;
-    gameSound = new Audio('audio/ukulele.wav');
+    gameSound = new Audio('audio/sharkiesmelody.wav');
     flaskSound = new Audio('audio/plopp.wav');
     coinSound = new Audio('audio/coin.wav');
     bubbleSound = new Audio('audio/bubbles.wav');
@@ -42,16 +42,17 @@ class World {
     }
 
 
-    checkBubbleAttack() {
+    checkBubbleAttack(bubbleType) {
         let bubbleStartX = this.character.otherDirection ? -10 : 200;
-        let bubble = new Bubble(this.character.x + bubbleStartX, this.character.y + 110, this.character.otherDirection);
+        let bubble = new Bubble(this.character.x + bubbleStartX, this.character.y + 110, this.character.otherDirection, bubbleType);
         this.bubbles.push(bubble);
 
     }
 
+
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (!(this.character.isHurt() || this.character.isDead() || this.character.isInvincible())) {
+            if (!(this.character.isHurt() || this.character.isDead() || this.character.isInvincible() || enemy.isDead())) {
                 if (this.character.isColliding(enemy) ||
                     enemy.isColliding(this.character)) {
                     this.collideWithEnemy(enemy);
@@ -61,12 +62,20 @@ class World {
             this.bubbles.forEach((bubble) => {
                 if (bubble.isColliding(enemy) ||
                     enemy.isColliding(bubble)) {
-                    console.log('lösche bubble und enemy');
-                    enemy.hit('bubble');
+                    enemy.hit(bubble.bubbleType);
+                    if (enemy instanceof Endboss) {
+                        this.statusBar.setPercentage(enemy.energy * 10);
+                    }
                     const indexOfBubble = this.bubbles.indexOf(bubble);
                     if (indexOfBubble !== -1) {
                         this.bubbles.splice(indexOfBubble, 1);
+                        clearInterval(bubble.bubbleIntervalId);
                     }
+                }
+                const indexOfBubble = this.bubbles.indexOf(bubble);
+                if (indexOfBubble !== -1 && bubble.y < -100) {
+                    this.bubbles.splice(indexOfBubble, 1);
+                    clearInterval(bubble.bubbleIntervalId);
                 }
             });
         });
@@ -113,9 +122,13 @@ class World {
 
 
     collectFlask() {
-        let flaskCounter = document.getElementById("flask-counter");
         this.flaskSound.play();
-        this.collectedFlasks++;
+        this.changeFlask(+1);
+    }
+
+    changeFlask(amount) {
+        let flaskCounter = document.getElementById("flask-counter");
+        this.collectedFlasks += amount;
         flaskCounter.innerHTML = this.collectedFlasks;
     }
 
@@ -124,6 +137,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addBackgroundToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
+        this.drawEndbossStatusBar();
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.light);
         this.addObjectsToMap(this.level.items);
@@ -133,6 +147,16 @@ class World {
         requestAnimationFrame(function() {
             self.draw();
         });
+    }
+
+    drawEndbossStatusBar() {
+        if (Endboss.endbossSwimming || Endboss.endbossDead) {
+            this.ctx.translate(-this.camera_x, 0);
+            //----- Space for fixed objects -----
+            this.addToMap(this.statusBar);
+            this.ctx.translate(this.camera_x, 0);
+        }
+
     }
 
     addBackgroundToMap(objects) {

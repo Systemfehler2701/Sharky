@@ -14,19 +14,11 @@ class MovableObject extends DrawableObject {
     isAggro = false;
 
 
-    drawFrame(ctx) {
-        if (this.offset != undefined) {
-            ctx.beginPath();
-            ctx.lineWidth = "2";
-            ctx.strokeStyle = "red";
-            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width + this.offset.width, this.height + this.offset.height);
-            ctx.stroke();
-        }
-    }
-
-
     hit(enemyType) {
         this.enemyType = enemyType;
+        if (this.enemyType == 'poison' && Endboss.endbossSwimming) {
+            this.energy -= 1;
+        }
         this.energy -= 1;
         if (this.energy < 0) {
             this.energy = 0;
@@ -59,7 +51,6 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(obj) {
-
         let objectHitbox = {
             x: obj.x + obj.offset.x,
             y: obj.y + obj.offset.y,
@@ -75,9 +66,11 @@ class MovableObject extends DrawableObject {
     isInAggroRange(obj) {
         let x = this.x + this.offset.x + this.width + this.offset.width;
         let xObj = obj.x + obj.offset.x;
-        if (xObj - x < this.aggroRange && !obj.isAggro) {
+        if (obj instanceof Endboss) {
+            return;
+        } else if (xObj - x < this.aggroRange && !obj.isAggro) {
             obj.isAggro = true;
-            obj.speed = 3;
+            obj.speed = 2.5;
         }
     }
 

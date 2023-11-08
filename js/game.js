@@ -23,9 +23,6 @@ window.addEventListener('keydown', (event) => {
     if (event.code == "KeyW") {
         keyboard.UP = true;
     }
-    if (event.code == "KeyC") {
-        keyboard.C = true;
-    }
     if (event.code == "Space") {
         keyboard.SPACE = true;
     }
@@ -43,9 +40,6 @@ window.addEventListener('keyup', (event) => {
     }
     if (event.code == "KeyW") {
         keyboard.UP = false;
-    }
-    if (event.code == "KeyC") {
-        keyboard.C = false;
     }
     if (event.code == "Space") {
         keyboard.SPACE = false;

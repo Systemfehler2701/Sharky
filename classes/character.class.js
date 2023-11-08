@@ -3,12 +3,13 @@ class Character extends MovableObject {
     height = 250;
     speed = 7;
     idleTime = new Date().getTime();
-    x = 100;
+    x = 4600;
     y = 100;
     world;
     offset = { x: 55, y: 130, width: -110, height: -190 };
     lastShoot = 0;
     shootImg = 0;
+    bubbleType;
 
     IMAGES_STAYING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -222,16 +223,25 @@ class Character extends MovableObject {
     isShooting() {
         let timepassed = new Date().getTime() - this.lastShoot;
         timepassed = timepassed / 1000;
-        return timepassed < 0.8;
+        return timepassed < 0.85;
     }
 
     bubbleAttack() {
         if (this.shootImg < 8) {
             this.world.bubbleSound.play();
-            this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
+            if (this.world.collectedFlasks > 0 && Endboss.endbossSwimming) {
+                this.playAnimation(this.IMAGES_ATTACK_WHALE);
+                this.bubbleType = 'poison';
+            } else {
+                this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
+                this.bubbleType = 'normal';
+            }
             this.shootImg++;
         } else {
-            this.world.checkBubbleAttack();
+            this.world.checkBubbleAttack(this.bubbleType);
+            if (this.bubbleType == 'poison') {
+                this.world.changeFlask(-1);
+            }
             this.shootImg = 0;
         }
     }

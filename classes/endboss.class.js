@@ -9,9 +9,16 @@ class Endboss extends MovableObject {
     endbossCameraRight = false; //Kamera Bewegung nach rechts wird ausgeführt
     endbossCameraLeft = false; //Kamera Bewegung nach links wird ausgeführt 
     endbossSpawning = false; //Einleitung für Endbossspawn
-    endbossSwimming = false; //Schwimmanimation wird ausgeführt
+    endbossAttack = false;
+    attackAnimation = 0;
+    spawnAnimation = 0;
+    deadAnimation = 0;
+    static endbossDead = false;
+    static endbossSwimming = false; //Schwimmanimation wird ausgeführt
     spawnAnimationCounter = 0; //Zählt die Bewegungen der Kamera
     offset = { x: 30, y: 200, width: -65, height: -270 };
+    moveLeftIntervalId;
+
     IMAGES_SPAWNING = [
         'img/2.Enemy/3 Final Enemy/1.Introduce/1.png',
         'img/2.Enemy/3 Final Enemy/1.Introduce/2.png',
@@ -65,14 +72,92 @@ class Endboss extends MovableObject {
         super().loadImage(this.IMAGES_SPAWNING[0]);
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_SPAWNING);
+        this.loadImages(this.IMAGES_ATTACK);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = this.endbossSpawn_x;
         this.y = this.endbossSpawn_y;
+        this.energy = 10;
         this.animate();
+    }
+
+
+    animate() {
+        addIntervalId(setInterval(() => {
+            if (this.endbossAttack) {
+                this.performAttack();
+                return;
+            }
+            if (this.isHurt()) {
+                this.hurtAnimation();
+                return;
+            }
+            if (this.isDead()) {
+                this.endbossDying();
+            }
+            if (this.endbossTrigger) {
+                this.endbossSpawnScene();
+            } else {
+                this.triggerEndboss();
+            }
+        }, 100));
+        addIntervalId(setInterval(() => {
+            if (Endboss.endbossSwimming) {
+                this.endbossAttack = true;
+            }
+        }, 3000));
+    }
+
+
+    performAttack() {
+        if (this.attackAnimation < 6) {
+            this.x -= 25;
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.attackAnimation++;
+        } else {
+            this.attackAnimation = 0;
+            this.endbossAttack = false;
+        }
+    }
+
+
+    endbossDying() {
+        Endboss.endbossSwimming = false;
+        Endboss.endbossDead = true;
+        clearInterval(this.moveLeftIntervalId);
+        if (this.deadAnimation == 0) {
+            this.moveUp();
+        }
+        if (this.deadAnimation < 5) {
+            this.playAnimation(this.IMAGES_DEAD);
+            this.deadAnimation++;
+        }
+        if (this.y < -30) {
+            stopGame();
+        }
+    }
+
+    endbossSpawnScene() {
+        if (this.endbossCameraRight) {
+            this.endbossCameraRight = false;
+            setTimeout(() => this.cameraMoveRight(world.character.speed), 250);
+        }
+        if (this.endbossSpawning) {
+            this.spawnEndboss();
+        }
+        if (this.endbossCameraLeft) {
+            this.endbossCameraLeft = false;
+            setTimeout(() => this.cameraMoveLeft(world.character.speed), 250);
+        }
+        if (Endboss.endbossSwimming) {
+            this.playAnimation(this.IMAGES_SWIMMING);
+        }
     }
 
     moveCamera(cameraLeftOrRight) {
         world.camera_x += cameraLeftOrRight;
     }
+
 
     triggerEndboss() {
         if (world != undefined && world.character != undefined && world.character.x > this.endbossSpawn_x_Trigger && !this.endbossTrigger) {
@@ -81,6 +166,7 @@ class Endboss extends MovableObject {
             this.endbossCameraRight = true;
         }
     }
+
 
     cameraMoveRight(moveCamera_x) {
         let interval = setInterval(() => {
@@ -94,14 +180,17 @@ class Endboss extends MovableObject {
         }, 1000 / 60);
     }
 
-    spawnEndboss(i) {
-        if (i < 10) {
+
+    spawnEndboss() {
+        if (this.spawnAnimation < 10) {
             this.playAnimation(this.IMAGES_SPAWNING);
+            this.spawnAnimation++;
         } else {
             this.endbossSpawning = false;
             this.endbossCameraLeft = true;
         }
     }
+
 
     cameraMoveLeft(moveCamera_x) {
         this.endbossCameraLeft = false;
@@ -109,36 +198,17 @@ class Endboss extends MovableObject {
             this.moveCamera(moveCamera_x);
             this.spawnAnimationCounter--;
             if (this.spawnAnimationCounter == 0) {
-                this.endbossSwimming = true;
-                this.moveLeft();
+                Endboss.endbossSwimming = true;
+                this.moveLeftIntervalId = this.moveLeft();
                 world.stopUserInput = false;
                 clearInterval(interval);
             }
         }, 1000 / 60);
     }
 
-    animate() {
-        let i = 0;
-        addIntervalId(setInterval(() => {
-            if (this.endbossTrigger) {
-                if (this.endbossCameraRight) {
-                    this.endbossCameraRight = false;
-                    setTimeout(() => this.cameraMoveRight(world.character.speed), 250);
-                }
-                if (this.endbossSpawning) {
-                    this.spawnEndboss(i);
-                    i++;
-                }
-                if (this.endbossCameraLeft) {
-                    this.endbossCameraLeft = false;
-                    setTimeout(() => this.cameraMoveLeft(world.character.speed), 250);
-                }
-                if (this.endbossSwimming) {
-                    this.playAnimation(this.IMAGES_SWIMMING);
-                }
-            } else {
-                this.triggerEndboss();
-            }
-        }, 100));
+
+    hurtAnimation() {
+        this.playAnimation(this.IMAGES_HURT);
+
     }
 }

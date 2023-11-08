@@ -19,6 +19,17 @@ class DrawableObject {
     }
 
 
+    drawFrame(ctx) {
+        if (this.offset != undefined) {
+            ctx.beginPath();
+            ctx.lineWidth = "2";
+            ctx.strokeStyle = "red";
+            ctx.rect(this.x + this.offset.x, this.y + this.offset.y, this.width + this.offset.width, this.height + this.offset.height);
+            ctx.stroke();
+        }
+    }
+
+
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
