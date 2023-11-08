@@ -3,7 +3,7 @@ class Character extends MovableObject {
     height = 250;
     speed = 7;
     idleTime = new Date().getTime();
-    x = 4600;
+    x = 100;
     y = 100;
     world;
     offset = { x: 55, y: 130, width: -110, height: -190 };
