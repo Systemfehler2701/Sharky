@@ -192,14 +192,19 @@ class Character extends MovableObject {
             if (i < 12) {
                 this.playAnimation(this.IMAGES_POISON_DEAD);
             } else {
-                this.world.loseSound.play();
+                BACKGROUND_MELODY.pause();
+                LOSE_SOUND.play();
                 stopGame();
+                renderGameOver('lose');
             }
         } else {
             if (i < 10) {
                 this.playAnimation(this.IMAGES_SHOCK_DEAD);
             } else {
+                BACKGROUND_MELODY.pause();
+                LOSE_SOUND.play();
                 stopGame();
+                renderGameOver('lose');
             }
         }
     }
@@ -228,7 +233,7 @@ class Character extends MovableObject {
 
     bubbleAttack() {
         if (this.shootImg < 8) {
-            this.world.bubbleSound.play();
+            BUBBLE_SOUND.play();
             if (this.world.collectedFlasks > 0 && Endboss.endbossSwimming) {
                 this.playAnimation(this.IMAGES_ATTACK_WHALE);
                 this.bubbleType = 'poison';

@@ -1,0 +1,112 @@
+@media only screen and (max-width:720px) {
+    canvas {
+        width: 100vw;
+    }
+    #game-over,
+    .story-screen,
+    .start-screen,
+    .game-screen {
+        width: 100vw !important;
+    }
+}
+
+@media only screen and (max-height:700px) {
+    #game-content {
+        height: unset;
+    }
+}
+
+@media only screen and (max-height:480px) {
+    canvas {
+        height: 100vh;
+    }
+    #game-over,
+    .story-screen,
+    .start-screen,
+    .game-screen {
+        height: 100vh !important;
+    }
+}
+
+@media (max-height:480px) {
+    .status {
+        width: 100%;
+        position: absolute;
+        top: 0px;
+    }
+    .game-buttons {
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+    }
+}
+
+@media (max-width: 720px) {
+    .story-text {
+        margin: 5px;
+        font-size: 80%;
+    }
+    .story-button img {
+        width: 25%;
+        cursor: pointer;
+        margin: 10px;
+    }
+    .status {
+        width: 100vw;
+        position: absolute;
+        top: 0px;
+    }
+    .game-buttons {
+        width: 100vw;
+        position: absolute;
+        bottom: 0px;
+    }
+    .move-button-left-right img,
+    .move-button-down img,
+    .move-button-up img,
+    .attack-button img {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    .energy-status,
+    .coin-status,
+    .flask-status {
+        font-size: 20px;
+    }
+    .status img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .energy-status img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-bottom: 10px;
+    }
+    .flask-status img {
+        width: 40px !important;
+        height: 55px !important;
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 500px) {
+    .instuctions span {
+        margin-left: 20px;
+        font-size: 80%;
+    }
+    .story-text {
+        font-size: 70%;
+    }
+    .story-button ing {
+        width: 20%;
+    }
+}
+
+@media (max-width: 430px) {
+    h1 {
+        font-size: 150%;
+    }
+    .story-text {
+        font-size: 60%;
+    }
+}

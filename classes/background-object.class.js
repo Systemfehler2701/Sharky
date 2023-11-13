@@ -2,6 +2,8 @@ class BackgroundObject extends MovableObject {
     x_offset;
     width = 720;
     height = 480;
+
+
     constructor(imagePath, x, speed) {
         super().loadImage(imagePath);
         this.y = 480 - this.height;
@@ -13,6 +15,9 @@ class BackgroundObject extends MovableObject {
         }
     }
 
+    /**
+     * 
+     */
     animate() {
         setInterval(() => {
             if (world != undefined) {

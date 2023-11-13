@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    background-image: url(../img/background_img/unterwasser.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Luckiest Guy', cursive;
+    color: lightcoral;
+    font-size: 22px;
+    user-select: none;
+}
+
+#game-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.game-screen {
+    height: 480px;
+    width: fit-content;
+    position: relative;
+}
+
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    height: 480px;
+    background-image: url(../img/background_img/Mesa_de_trabajo1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.story-screen {
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    height: 480px;
+    background-image: url(../img/3.%20Background/Layers/5.%20Water/D1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-over {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-over-background-win {
+    background-image: url(../img/6.Botones/Try%20again/Mesa%20de%20trabajo%201.png);
+    width: 720px;
+    height: 480px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.game-over-background-lose {
+    background-image: url(../img/6.Botones/Tittles/Game%20Over/Recurso%2012.png);
+    width: 720px;
+    height: 480px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.story-text {
+    margin: 30px;
+    color: white;
+}
+
+.story-text p {
+    margin: 0 !important;
+}
+
+.story-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-button img {
+    width: 25%;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.story-button img:hover {
+    transform: scale(1.1);
+}
+
+#audio-button {
+    background-image: url(../img/6.Botones/Start/toggle_sound_3.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px !important;
+    height: 40px !important;
+    cursor: pointer;
+}
+
+#audio-button:hover {
+    transform: scale(1.1);
+}
+
+.headline {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 210%;
+    margin: 30px 0;
+}
+
+.game-info {
+    display: flex;
+    width: 100%;
+    height: 50%;
+}
+
+.game-info-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 40%;
+}
+
+.game-info-buttons img {
+    width: 50%;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.game-info-buttons img:hover {
+    transform: scale(1.1);
+}
+
+.instuctions {
+    display: flex;
+    padding-left: 20px;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 60%;
+    height: 100%;
+}
+
+.instuctions div {
+    margin: 10px 0 20px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.instuctions img {
+    width: 50%;
+}
+
+.instuctions span {
+    margin-left: 20px;
+    font-size: 120%;
+}
+
+.mobile-attack {
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    width: 50%;
+    margin: 0 !important;
+}
+
+.mobile-attack img {
+    width: 28% !important;
+}
+
+.game-buttons {
+    position: relative;
+    bottom: 225px;
+    display: flex;
+    width: 700px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.move-buttons {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.move-button-left-right {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.move-button-left-right img,
+.move-button-down img,
+.move-button-up img,
+.attack-button img {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+canvas {
+    background-color: black;
+    display: block;
+}
+
+.status {
+    position: relative;
+    top: -485px;
+    display: flex;
+    width: 720px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.status span {
+    margin: 0 10px 0 0;
+}
+
+.energy-status,
+.coin-status,
+.flask-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
+}
+
+.status img {
+    width: 60px;
+    height: 60px;
+}
+
+.energy-status img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.flask-status img {
+    width: 50px;
+    height: 65px;
+    margin-bottom: 25px;
+}
+
+.d-none {
+    display: none;
+}

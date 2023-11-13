@@ -10,15 +10,6 @@ class World {
     bubbles = [];
     collectedCoins = 0;
     collectedFlasks = 0;
-    gameSound = new Audio('audio/sharkiesmelody.wav');
-    flaskSound = new Audio('audio/plopp.wav');
-    coinSound = new Audio('audio/coin.wav');
-    bubbleSound = new Audio('audio/bubbles.wav');
-    shockSound = new Audio('audio/electroshock.wav');
-    loseSound = new Audio('audio/lose.wav');
-    winSound = new Audio('audio/win.wav');
-    poisonSound = new Audio('audio/poison.wav');
-    slapSound = new Audio('audio/slap.wav');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,8 +18,7 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-        this.gameSound.loop = true;
-        //this.gameSound.play();
+
     }
 
     setWorld() {
@@ -85,15 +75,14 @@ class World {
                 this.collideWithItem(item);
             }
         });
-
     }
 
     collideWithEnemy(enemy) {
         if (enemy instanceof PufferFish || enemy instanceof Endboss) {
-            this.poisonSound.play();
+            POISON_SOUND.play();
             this.character.hit('poison');
         } else if (enemy instanceof JellyFish) {
-            this.shockSound.play();
+            SHOCK_SOUND.play();
             this.character.hit('electro');
         }
         let energyCounter = document.getElementById("energy-counter");
@@ -115,14 +104,14 @@ class World {
 
     collectCoin() {
         let coinCounter = document.getElementById("coin-counter");
-        this.coinSound.play();
+        COIN_SOUND.play();
         this.collectedCoins++;
         coinCounter.innerHTML = this.collectedCoins;
     }
 
 
     collectFlask() {
-        this.flaskSound.play();
+        FLASK_SOUND.play();
         this.changeFlask(+1);
     }
 
@@ -131,6 +120,7 @@ class World {
         this.collectedFlasks += amount;
         flaskCounter.innerHTML = this.collectedFlasks;
     }
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -177,7 +167,7 @@ class World {
 
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        //mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);

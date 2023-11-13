@@ -131,9 +131,12 @@ class Endboss extends MovableObject {
         if (this.deadAnimation < 5) {
             this.playAnimation(this.IMAGES_DEAD);
             this.deadAnimation++;
+            BACKGROUND_MELODY.pause();
+            WIN_SOUND.play();
         }
-        if (this.y < -30) {
+        if (this.y < -10) {
             stopGame();
+            renderGameOver('win');
         }
     }
 
@@ -199,11 +202,22 @@ class Endboss extends MovableObject {
             this.spawnAnimationCounter--;
             if (this.spawnAnimationCounter == 0) {
                 Endboss.endbossSwimming = true;
-                this.moveLeftIntervalId = this.moveLeft();
+                this.moveLeftIntervalId = this.moveEndboss();
                 world.stopUserInput = false;
                 clearInterval(interval);
             }
         }, 1000 / 60);
+    }
+
+    moveEndboss() {
+        return addIntervalId(setInterval(() => {
+            this.x -= this.speed;
+            if (this.y + this.offset.y < world.character.y + world.character.offset.y) {
+                this.y += 3;
+            } else {
+                this.y -= 3;
+            }
+        }, 1000 / 60));
     }
 
 
