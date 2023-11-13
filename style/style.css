@@ -125,6 +125,17 @@ h1 {
     margin: 30px 0;
 }
 
+canvas {
+    background-color: black;
+    display: block;
+}
+
+:fullscreen canvas {
+    height: 100vh !important;
+    width: 100vw !important;
+    object-fit: contain;
+}
+
 .game-info {
     display: flex;
     width: 100%;
@@ -196,6 +207,27 @@ h1 {
     justify-content: space-between;
 }
 
+.fullscreen-button {
+    position: relative;
+    bottom: 135px;
+    display: flex;
+    width: 715px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+:fullscreen .fullscreen-button {
+    position: absolute;
+    width: 100vw !important;
+    bottom: 0;
+    right: 0;
+}
+
+.fullscreen-button img:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
 .move-buttons {
     width: 150px;
     display: flex;
@@ -212,14 +244,10 @@ h1 {
 .move-button-left-right img,
 .move-button-down img,
 .move-button-up img,
-.attack-button img {
+.attack-button img,
+.fullscreen-button img {
     width: 40px !important;
     height: 40px !important;
-}
-
-canvas {
-    background-color: black;
-    display: block;
 }
 
 .status {
@@ -229,6 +257,12 @@ canvas {
     width: 720px;
     align-items: center;
     justify-content: flex-start;
+}
+
+:fullscreen .status {
+    position: absolute;
+    top: 0;
+    width: 100vw;
 }
 
 .status span {

@@ -11,12 +11,14 @@ class Light extends MovableObject {
         this.animate();
     }
 
+    /**
+     * This function animate the object
+     */
     animate() {
         setInterval(() => {
             if (world != undefined) {
                 this.x = -world.camera_x * this.speed + this.x_offset;
             }
-
         }, 1000 / 60);
     }
 }

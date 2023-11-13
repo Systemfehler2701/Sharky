@@ -23,7 +23,7 @@ function addAudio(audiofile) {
 
 /**
  * This function change the volume off all audiofiles
- * @param {*} volume 
+ * @param {number} volume 
  */
 function setAllVolumes(volume) {
     allAudios.forEach(audio => {
@@ -32,7 +32,7 @@ function setAllVolumes(volume) {
 }
 
 /***
- * This function change  the sound an the button img on click 
+ * This function change the volume
  */
 function toggleVolume() {
     playSound();

@@ -26,7 +26,9 @@ class Bubble extends MovableObject {
         this.blubb();
     }
 
-
+    /**
+     * Move the bubble right direction
+     */
     blubb() {
         this.speedY = 0;
         this.bubbleIntervalId = addIntervalId(setInterval(() => {
@@ -35,7 +37,9 @@ class Bubble extends MovableObject {
         }, 50));
     }
 
-
+    /**
+     * move the bubble up
+     */
     riseUp() {
         if (Math.abs(this.bubbleStartX - this.x) > this.distance) {
             this.y += this.speedY;

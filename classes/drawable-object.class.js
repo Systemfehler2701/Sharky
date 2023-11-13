@@ -7,18 +7,30 @@ class DrawableObject {
     imageCache = [];
     currentImage = 0;
 
-
+    /**
+     * set the object img to the path
+     * 
+     * @param {string} path 
+     */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
-
+    /**
+     * draws an image to the canvas context
+     * 
+     * @param {*} ctx canvas context
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-
+    /**
+     * draw frame around objects with offset
+     * 
+     * @param {*} ctx canvas context
+     */
     drawFrame(ctx) {
         if (this.offset != undefined) {
             ctx.beginPath();
@@ -29,7 +41,10 @@ class DrawableObject {
         }
     }
 
-
+    /**
+     * import an array of images to imageCache for accessing the image later
+     * @param {array} arr contains the path to each image
+     */
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();

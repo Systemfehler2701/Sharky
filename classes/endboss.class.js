@@ -68,8 +68,13 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png',
     ]
 
+    /**
+     * Creates a new instance of Endboss
+     */
     constructor() {
+        // Calls the constructor of the parent class (MovableObject)
         super().loadImage(this.IMAGES_SPAWNING[0]);
+        // Loads the various images for animations
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_SPAWNING);
         this.loadImages(this.IMAGES_ATTACK);
@@ -77,29 +82,18 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.x = this.endbossSpawn_x;
         this.y = this.endbossSpawn_y;
+        // Sets the character's energy to 10
         this.energy = 10;
+        // Starts the animation
         this.animate();
     }
 
-
+    /**
+     * This function animate the object
+     */
     animate() {
         addIntervalId(setInterval(() => {
-            if (this.endbossAttack) {
-                this.performAttack();
-                return;
-            }
-            if (this.isHurt()) {
-                this.hurtAnimation();
-                return;
-            }
-            if (this.isDead()) {
-                this.endbossDying();
-            }
-            if (this.endbossTrigger) {
-                this.endbossSpawnScene();
-            } else {
-                this.triggerEndboss();
-            }
+            this.animateEndboss();
         }, 100));
         addIntervalId(setInterval(() => {
             if (Endboss.endbossSwimming) {
@@ -108,7 +102,33 @@ class Endboss extends MovableObject {
         }, 3000));
     }
 
+    /**
+     * animed the endboss
+     * 
+     * @returns 
+     */
+    animateEndboss() {
+        if (this.endbossAttack) {
+            this.performAttack();
+            return;
+        }
+        if (this.isHurt()) {
+            this.hurtAnimation();
+            return;
+        }
+        if (this.isDead()) {
+            this.endbossDying();
+        }
+        if (this.endbossTrigger) {
+            this.endbossSpawnScene();
+        } else {
+            this.triggerEndboss();
+        }
+    }
 
+    /**
+     * 
+     */
     performAttack() {
         if (this.attackAnimation < 6) {
             this.x -= 25;
@@ -120,11 +140,25 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * show gameOver screen
+     */
     endbossDying() {
         Endboss.endbossSwimming = false;
         Endboss.endbossDead = true;
         clearInterval(this.moveLeftIntervalId);
+        this.dyingAnimation();
+        setTimeout(() => {
+            stopGame();
+            renderGameOver('win');
+        }, 3000);
+    }
+
+
+    /**
+     * This function gives the dying animation
+     */
+    dyingAnimation() {
         if (this.deadAnimation == 0) {
             this.moveUp();
         }
@@ -134,12 +168,11 @@ class Endboss extends MovableObject {
             BACKGROUND_MELODY.pause();
             WIN_SOUND.play();
         }
-        if (this.y < -10) {
-            stopGame();
-            renderGameOver('win');
-        }
     }
 
+    /**
+     * spwan scene for endboss
+     */
     endbossSpawnScene() {
         if (this.endbossCameraRight) {
             this.endbossCameraRight = false;
@@ -157,11 +190,18 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Moves the camera on the X axis
+     * 
+     * @param {number} cameraLeftOrRight - The amount the camera is moved
+     */
     moveCamera(cameraLeftOrRight) {
         world.camera_x += cameraLeftOrRight;
     }
 
-
+    /**
+     * Initializes the spawn animation for the final boss
+     */
     triggerEndboss() {
         if (world != undefined && world.character != undefined && world.character.x > this.endbossSpawn_x_Trigger && !this.endbossTrigger) {
             world.stopUserInput = true;
@@ -170,7 +210,11 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Move the camera to the right before the final boss appears
+     * 
+     * @param {number} moveCamera_x - The amount the camera is moved
+     */
     cameraMoveRight(moveCamera_x) {
         let interval = setInterval(() => {
             if (world.camera_x > world.level.cameraEnd_x + moveCamera_x) {
@@ -183,7 +227,9 @@ class Endboss extends MovableObject {
         }, 1000 / 60);
     }
 
-
+    /**
+     * spawn animation endbos
+     */
     spawnEndboss() {
         if (this.spawnAnimation < 10) {
             this.playAnimation(this.IMAGES_SPAWNING);
@@ -194,7 +240,11 @@ class Endboss extends MovableObject {
         }
     }
 
-
+    /**
+     * Move the camera to the left after the final boss appears
+     * 
+     * @param {number} moveCamera_x - The amount the camera is moved
+     */
     cameraMoveLeft(moveCamera_x) {
         this.endbossCameraLeft = false;
         let interval = setInterval(() => {
@@ -209,18 +259,25 @@ class Endboss extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Starts the final boss's movement to the left, taking into account the character's vertical position
+     * 
+     * @returns {number} - The ID of the interval for the final boss movement
+     */
     moveEndboss() {
         return addIntervalId(setInterval(() => {
             this.x -= this.speed;
-            if (this.y + this.offset.y < world.character.y + world.character.offset.y) {
+            if (this.y + this.offset.y + 30 < world.character.y + world.character.offset.y) {
                 this.y += 3;
-            } else {
+            } else if (this.y + this.offset.y + 10 > world.character.y + world.character.offset.y) {
                 this.y -= 3;
             }
         }, 1000 / 60));
     }
 
-
+    /**
+     * Starts the final boss's hurt animation
+     */
     hurtAnimation() {
         this.playAnimation(this.IMAGES_HURT);
 

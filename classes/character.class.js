@@ -10,6 +10,7 @@ class Character extends MovableObject {
     lastShoot = 0;
     shootImg = 0;
     bubbleType;
+    deadAnimation = 0;
 
     IMAGES_STAYING = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -114,9 +115,13 @@ class Character extends MovableObject {
         'img/1.Sharkie/6.dead/2.Electro_shock/10.png'
     ];
 
-
+    /**
+     * Creates a new instance of character
+     */
     constructor() {
+        // Calls the constructor of the parent class (MovableObject)
         super().loadImage('img/1.Sharkie/1.IDLE/1.png', );
+        // Loads the various images for animations
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_STAYING);
         this.loadImages(this.IMAGES_SLEEPING);
@@ -126,58 +131,22 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SHOCK);
         this.loadImages(this.IMAGES_POISON_DEAD);
         this.loadImages(this.IMAGES_SHOCK_DEAD);
+        // Sets the character's energy to 5
         this.energy = 5;
+        // Starts the animation
         this.animate();
-
     }
 
+    /**
+     * This function animate the object
+     */
     animate() {
-        let i = 0;
         addIntervalId(setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
-                this.otherDirection = false;
-            }
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.x -= this.speed;
-                this.otherDirection = true;
-            }
-            if (this.world.keyboard.UP && this.y > -100) {
-                this.y -= this.speed;
-            }
-            if (this.world.keyboard.DOWN && this.y < 260) {
-                this.y += this.speed;
-            }
-            if (this.x > 100 && !world.stopUserInput) {
-                this.world.camera_x = -this.x + 100;
-            }
-            if (this.x > 5140) {
-                this.world.camera_x = this.world.level.cameraEnd_x;
-            }
-            if (this.world.keyboard.SPACE) {
-                this.shoot();
-            }
-
+            this.moveCharacter();
         }, 1000 / 60));
 
         addIntervalId(setInterval(() => {
-            if (this.isDead()) {
-                this.dyingAnimation(i);
-                i++;
-                return;
-            }
-            if (this.isHurt()) {
-                this.hurtAnimation();
-                return;
-            }
-            if (this.isShooting()) {} else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                this.playAnimation(this.IMAGES_SWIMMING);
-                this.idleTime = new Date().getTime();
-            } else if (new Date().getTime() - this.idleTime > 10000) {
-                this.playAnimation(this.IMAGES_SLEEPING);
-            } else {
-                this.playAnimation(this.IMAGES_STAYING);
-            }
+            this.animedCharacter();
         }, 180));
         addIntervalId(setInterval(() => {
             if (this.isShooting()) {
@@ -186,29 +155,178 @@ class Character extends MovableObject {
         }, 90));
     }
 
-    dyingAnimation(i) {
-        this.world.stopUserInput = true;
-        if (this.enemyType == 'poison') {
-            if (i < 12) {
-                this.playAnimation(this.IMAGES_POISON_DEAD);
-            } else {
-                BACKGROUND_MELODY.pause();
-                LOSE_SOUND.play();
-                stopGame();
-                renderGameOver('lose');
-            }
-        } else {
-            if (i < 10) {
-                this.playAnimation(this.IMAGES_SHOCK_DEAD);
-            } else {
-                BACKGROUND_MELODY.pause();
-                LOSE_SOUND.play();
-                stopGame();
-                renderGameOver('lose');
-            }
+    /**
+     * This function move the character
+     */
+    moveCharacter() {
+        if (this.world.stopUserInput) {
+            this.world.keyboard.LEFT = this.world.keyboard.RIGHT = this.world.keyboard.UP = this.world.keyboard.DOWN = this.world.keyboard.D = this.world.keyboard.SPACE = false;
+            return;
+        }
+        this.characterMoveRight();
+        this.characterMoveLeft();
+        this.characterMoveUp();
+        this.characterMoveDown();
+        this.cameraFocusCharacter();
+        this.cameraEnd();
+        this.characterAttack();
+    }
+
+    /**
+     * character move right
+     */
+    characterMoveRight() {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.x += this.speed;
+            this.otherDirection = false;
         }
     }
 
+    /**
+     * character move left
+     */
+    characterMoveLeft() {
+        if (this.world.keyboard.LEFT && this.x > 0) {
+            this.x -= this.speed;
+            this.otherDirection = true;
+        }
+    }
+
+    /**
+     * character move up
+     */
+    characterMoveUp() {
+        if (this.world.keyboard.UP && this.y > -100) {
+            this.y -= this.speed;
+        }
+    }
+
+    /**
+     * character move down
+     */
+    characterMoveDown() {
+        if (this.world.keyboard.DOWN && this.y < 260) {
+            this.y += this.speed;
+        }
+    }
+
+    /**
+     * character attack
+     */
+    characterAttack() {
+        if (this.world.keyboard.SPACE) {
+            this.shoot();
+        }
+    }
+
+    /**
+     * camera focus character
+     */
+    cameraFocusCharacter() {
+        if (this.x > 100 && !world.stopUserInput) {
+            this.world.camera_x = -this.x + 100;
+        }
+    }
+
+    /**
+     * 
+     */
+    cameraEnd() {
+        if (this.x > 5140) {
+            this.world.camera_x = this.world.level.cameraEnd_x;
+        }
+    }
+
+    /**
+     * character animations
+     * 
+     * @returns 
+     */
+    animedCharacter() {
+        if (this.isDead()) {
+            this.dyingAnimation();
+            return;
+        }
+        if (this.isHurt()) {
+            this.hurtAnimation();
+            return;
+        }
+        if (this.isShooting()) {} else this.characterSwimming();
+    }
+
+    /**
+     * character swimming animation
+     */
+    characterSwimming() {
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+            this.playAnimation(this.IMAGES_SWIMMING);
+            this.idleTime = new Date().getTime();
+        } else
+            this.characterDontMoveAnimation();
+    }
+
+    /**
+     * character sleeping animation
+     */
+    characterDontMoveAnimation() {
+        if (new Date().getTime() - this.idleTime > 10000) {
+            this.playAnimation(this.IMAGES_SLEEPING);
+        } else {
+            this.playAnimation(this.IMAGES_STAYING);
+        }
+    }
+
+    /**
+     * This function gives the dying animation
+     * 
+     * @param {integer} i imagecount
+     */
+    dyingAnimation() {
+        this.world.stopUserInput = true;
+        if (this.enemyType == 'poison') {
+            this.poisonDead();
+        } else {
+            this.electroDead();
+        }
+    }
+
+    /**
+     * poison dead animation
+     */
+    poisonDead() {
+        if (this.deadAnimation < 12) {
+            this.playAnimation(this.IMAGES_POISON_DEAD);
+            this.deadAnimation++
+        } else {
+            this.loseScreen();
+        }
+    }
+
+    /**
+     * electro dead animation
+     */
+    electroDead() {
+        if (this.deadAnimation < 10) {
+            this.playAnimation(this.IMAGES_SHOCK_DEAD);
+            this.deadAnimation++
+        } else {
+            this.loseScreen();
+        }
+    }
+
+    /**
+     * show gameOver screen
+     */
+    loseScreen() {
+        BACKGROUND_MELODY.pause();
+        LOSE_SOUND.play();
+        stopGame();
+        renderGameOver('lose');
+    }
+
+    /**
+     * gives the correct hurt animation
+     */
     hurtAnimation() {
         if (this.enemyType == 'poison') {
             this.playAnimation(this.IMAGES_POISON);
@@ -217,6 +335,11 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * initialize a shot if it is not already being fired
+     * 
+     * @returns ""
+     */
     shoot() {
         if (this.isShooting()) {
             return;
@@ -225,29 +348,58 @@ class Character extends MovableObject {
         this.lastShoot = new Date().getTime();
     }
 
+    /**
+     *  This function detects the time that has passed since the last shoot
+     * 
+     * @returns isShooting = true
+     */
     isShooting() {
         let timepassed = new Date().getTime() - this.lastShoot;
         timepassed = timepassed / 1000;
         return timepassed < 0.85;
     }
 
+    /**
+     * animate bubble attack
+     */
     bubbleAttack() {
         if (this.shootImg < 8) {
             BUBBLE_SOUND.play();
             if (this.world.collectedFlasks > 0 && Endboss.endbossSwimming) {
-                this.playAnimation(this.IMAGES_ATTACK_WHALE);
-                this.bubbleType = 'poison';
+                this.poisonBubble();
             } else {
-                this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
-                this.bubbleType = 'normal';
+                this.normalBubble();
             }
             this.shootImg++;
         } else {
             this.world.checkBubbleAttack(this.bubbleType);
-            if (this.bubbleType == 'poison') {
-                this.world.changeFlask(-1);
-            }
+            this.useFlask();
             this.shootImg = 0;
+        }
+    }
+
+    /**
+     * shoot poison bubble
+     */
+    poisonBubble() {
+        this.playAnimation(this.IMAGES_ATTACK_WHALE);
+        this.bubbleType = 'poison';
+    }
+
+    /**
+     * shoot normal bubble
+     */
+    normalBubble() {
+        this.playAnimation(this.IMAGES_BUBBLE_ATTACK);
+        this.bubbleType = 'normal';
+    }
+
+    /**
+     * use flask for poison bubble
+     */
+    useFlask() {
+        if (this.bubbleType == 'poison') {
+            this.world.changeFlask(-1);
         }
     }
 }

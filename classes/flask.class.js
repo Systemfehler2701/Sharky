@@ -13,6 +13,11 @@ class Flask extends MovableObject {
         'img/4. Marcadores/Posión/Animada/8.png'
     ];
 
+    /**
+     * Creates a Flask instance with the given coordinates
+     * @param {number} x - The x coordinate of the Flask
+     * @param {number} y - The y coordinate of the Flask
+     */
     constructor(x, y) {
         super().loadImage('img/4. Marcadores/Posión/Animada/1.png');
         this.loadImages(this.IMAGES_FLASK);
@@ -22,6 +27,9 @@ class Flask extends MovableObject {
         this.animate();
     }
 
+    /**
+     * This function animate the object
+     */
     animate() {
         addIntervalId(setInterval(() => {
             this.playAnimation(this.IMAGES_FLASK);

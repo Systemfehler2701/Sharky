@@ -16,6 +16,9 @@ class StatusBar extends DrawableObject {
 
     percentage = 100;
 
+    /**
+     * Creates a status bar instance for the final boss
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -26,12 +29,21 @@ class StatusBar extends DrawableObject {
         this.setPercentage(100);
     }
 
+    /**
+     * sets the correct img by percentage
+     * 
+     * @param {number} percentage a number with the current percentage
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * 
+     * @returns the number for the right img
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 10;

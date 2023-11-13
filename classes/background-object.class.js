@@ -16,7 +16,7 @@ class BackgroundObject extends MovableObject {
     }
 
     /**
-     * 
+     * This function animate the object
      */
     animate() {
         setInterval(() => {

@@ -30,6 +30,11 @@ function renderGameStartScreen() {
     </div>`;
 }
 
+/**
+ * This function render the instructions
+ * 
+ * @returns HTML
+ */
 function renderInstructions() {
     if (navigator.userAgentData.mobile == false) {
         return /* html */ `<div><img src="img/6.Botones/Key/wasd_keys.png"><span>Move Sharkie</span></div>
@@ -69,11 +74,10 @@ function startGame() {
     BUBBLE_SOUND.play();
     let content = document.getElementById('game-content');
     content.innerHTML = '';
-    content.innerHTML = /* html */ `<div class="game-screen"><canvas id="canvas" width="720" height="480">          
+    content.innerHTML = /* html */ `<div id="fullscreen" class="game-screen"><canvas id="canvas" width="720" height="480">          
     </canvas>
     ${renderStatusbar()}
     ${renderActionButtons()}</div>`;
-    addTouchListener();
     stopGame();
     initLevel();
     canvas = document.getElementById('canvas');
@@ -95,22 +99,29 @@ function renderStatusbar() {
     </div>`;
 }
 
-
+/**
+ * This function render the action-buttons
+ * 
+ * @returns HTML
+ */
 function renderActionButtons() {
     if (navigator.userAgentData.mobile == true) {
         return /* html */ `
-    <div  class="game-buttons">
+    <div class="game-buttons">
         <div class="move-buttons">
-            <div class="move-button-up"><img id="btnUp" src="img/6.Botones/Key/UP.png"></div>
-            <div class="move-button-left-right"><img id="btnLeft" src="img/6.Botones/Key/LEFT.png"><img id="btnRight" src="img/6.Botones/Key/RIGHT.png"></div>
-            <div class="move-button-down"><img id="btnDown" src="img/6.Botones/Key/DOWN.png"></div>
+            <div class="move-button-up"><img class="touch-btn" id="KeyW" src="img/6.Botones/Key/UP.png"></div>
+            <div class="move-button-left-right"><img class="touch-btn" id="KeyA" src="img/6.Botones/Key/LEFT.png"><img class="touch-btn" id="KeyD" src="img/6.Botones/Key/RIGHT.png"></div>
+            <div class="move-button-down"><img class="touch-btn" id="KeyS" src="img/6.Botones/Key/DOWN.png"></div>
         </div>
         <div class="attack-button">
-            <img id="btnAttack" src="img/6.Botones/Key/ATTACK.png">
+            <img class="touch-btn" id="Space" src="img/6.Botones/Key/ATTACK.png">
         </div>
     </div>`;
     } else {
-        return "";
+        return /* html */ `
+        <div class="fullscreen-button">
+                <img class="touch-btn" id="Space" src="img/6.Botones/Key/fullscreen.png" onclick="fullscreen()">        
+        </div>`;
     }
 }
 
@@ -137,9 +148,16 @@ function renderGameOver(winOrLose) {
     </div>`;
 }
 
-
+/**
+ * Event listener for character button control
+ * Disables key controls when the world has stopped user input
+ * @param {Event} event - The keyboard event
+ */
 window.addEventListener('keydown', (event) => {
-    cantMove();
+    if (world.stopUserInput) {
+        keyboard.LEFT = keyboard.RIGHT = keyboard.UP = keyboard.DOWN = keyboard.D = keyboard.SPACE = false;
+        return;
+    }
     if (event.code == "KeyA") {
         keyboard.LEFT = true;
     }
@@ -157,6 +175,9 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
+/**
+ * Event listener for character button control
+ */
 window.addEventListener('keyup', (event) => {
     if (event.code == "KeyA") {
         keyboard.LEFT = false;
@@ -175,69 +196,75 @@ window.addEventListener('keyup', (event) => {
     }
 });
 
-function addTouchListener() {
-    if (navigator.userAgentData.mobile == true) {
-        document.getElementById('btnLeft').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.LEFT = true;
+/**
+ * Event listener for touch events
+ * Checks whether the touched element contains a 'touch-btn' class and sends the corresponding keyboard event
+ * @param {TouchEvent} event - The touch event
+ */
+window.addEventListener('touchstart', (event) => {
+    if (event.target.classList.contains('touch-btn')) {
+        let keyDown = new KeyboardEvent('keydown', {
+            code: event.target.id
         });
-
-        document.getElementById('btnLeft').addEventListener('touchend', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.LEFT = false;
-        });
-        document.getElementById('btnRight').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.RIGHT = true;
-        });
-
-        document.getElementById('btnRight').addEventListener('touchend', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.RIGHT = false;
-        });
-        document.getElementById('btnUp').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.UP = true;
-        });
-
-        document.getElementById('btnUp').addEventListener('touchend', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.UP = false;
-        });
-        document.getElementById('btnDown').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.DOWN = true;
-        });
-
-        document.getElementById('btnDown').addEventListener('touchend', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.DOWN = false;
-        });
-        document.getElementById('btnAttack').addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.SPACE = true;
-        });
-
-        document.getElementById('btnAttack').addEventListener('touchend', (e) => {
-            e.preventDefault();
-            cantMove();
-            keyboard.SPACE = false;
-        });
+        window.dispatchEvent(keyDown);
     }
+});
 
-    function cantMove() {
-        if (world.stopUserInput) {
-            keyboard.LEFT = keyboard.RIGHT = keyboard.UP = keyboard.DOWN = keyboard.D = keyboard.SPACE = false;
-            return;
-        }
+/**
+ * Event listener for touch events
+ */
+window.addEventListener('touchend', (event) => {
+    if (event.target.classList.contains('touch-btn')) {
+        let keyUp = new KeyboardEvent('keyup', {
+            code: event.target.id
+        });
+        window.dispatchEvent(keyUp);
+    }
+});
+
+/**
+ * prevent touch hold opens the context menu while game-canvas is rendered
+ */
+document.addEventListener('contextmenu', function(event) {
+    if (event.pointerType === 'touch' && document.getElementById('canvas') != null) {
+        event.preventDefault();
+    }
+});
+
+/**
+ * open or close the fullscreen
+ */
+function fullscreen() {
+    let fullscreen = document.getElementById('fullscreen');
+    if (fullscreen == document.fullscreenElement) {
+        exitFullscreen();
+    } else {
+        enterFullscreen(fullscreen);
+    }
+}
+
+/**
+ * open fullscreen
+ * 
+ * @param {HTMLElement} element - this element will get the fullscreen
+ */
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) { // for IE11 (remove June 15, 2022)
+        element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) { // iOS Safari
+        element.webkitRequestFullscreen();
+    }
+}
+
+/**
+ * close fullscreen
+ */
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
     }
 }
