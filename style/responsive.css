@@ -61,6 +61,14 @@
         position: absolute;
         bottom: 0px;
     }
+    .fullscreen-button {
+        width: 100vw;
+        position: absolute;
+        bottom: 5px;
+    }
+    .game-screen {
+        height: fit-content;
+    }
     .move-button-left-right img,
     .move-button-down img,
     .move-button-up img,

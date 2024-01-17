@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 
+<!-- 
+    suchen ersetzen in dieser datei nach
+    ?v=1 (alt)
+    ersetzen durch
+    ?v=2 (neu)
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="img/2.Enemy/2 Jelly fish/Súper dangerous/Pink 4.png">
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/font.css">
-    <link rel="stylesheet" href="style/responsive.css">
-    <script src="js/audioHandler.js"></script>
-    <script src="js/intervalHandler.js"></script>
-    <script src="classes/drawable-object.class.js"></script>
-    <script src="classes/movable-object.class.js"></script>
-    <script src="classes/character.class.js"></script>
-    <script src="classes/pufferfish.class.js"></script>
-    <script src="classes/jellyfish.class.js"></script>
-    <script src="classes/status-bar.class.js"></script>
-    <script src="classes/world.class.js"></script>
-    <script src="classes/background-object.class.js"></script>
-    <script src="classes/light.class.js"></script>
-    <script src="classes/keyboard.class.js"></script>
-    <script src="classes/level.class.js"></script>
-    <script src="classes/endboss.class.js"></script>
-    <script src="classes/coins.class.js"></script>
-    <script src="classes/flask.class.js"></script>
-    <script src="classes/bubble.class.js"></script>
-    <script src="levels/level1.js"></script>
-    <script src="js/game.js"></script>
+    <link rel="stylesheet" href="style/style.css?v=1">
+    <link rel="stylesheet" href="style/font.css?v=1">
+    <link rel="stylesheet" href="style/responsive.css?v=1">
+    <script src="js/audioHandler.js?v=1"></script>
+    <script src="js/intervalHandler.js?v=1"></script>
+    <script src="classes/drawable-object.class.js?v=1"></script>
+    <script src="classes/movable-object.class.js?v=1"></script>
+    <script src="classes/character.class.js?v=1"></script>
+    <script src="classes/pufferfish.class.js?v=1"></script>
+    <script src="classes/jellyfish.class.js?v=1"></script>
+    <script src="classes/status-bar.class.js?v=1"></script>
+    <script src="classes/world.class.js?v=1"></script>
+    <script src="classes/background-object.class.js?v=1"></script>
+    <script src="classes/light.class.js?v=1"></script>
+    <script src="classes/keyboard.class.js?v=1"></script>
+    <script src="classes/level.class.js?v=1"></script>
+    <script src="classes/endboss.class.js?v=1"></script>
+    <script src="classes/coins.class.js?v=1"></script>
+    <script src="classes/flask.class.js?v=1"></script>
+    <script src="classes/bubble.class.js?v=1"></script>
+    <script src="levels/level1.js?v=1"></script>
+    <script src="js/game.js?v=1"></script>
     <title>Sharkie</title>
 </head>
 
 <body onload="init()">
-    <div id="game-content"></div>
-
+    <div id="game-content">
+    </div>
+    <div class="device-alignment-info d-none" id="device-alignment-info">
+        <div class="device-alignment">
+            <span>Please turn your device</span>
+            <div class="device-alignment-button" onclick="closeDeviceInfo()">OK</div>
+        </div>
+    </div>
 
 </body>
 

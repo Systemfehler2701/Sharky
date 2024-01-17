@@ -36,12 +36,12 @@ function renderGameStartScreen() {
  * @returns HTML
  */
 function renderInstructions() {
-    if (navigator.userAgentData.mobile == false) {
-        return /* html */ `<div><img src="img/6.Botones/Key/wasd_keys.png"><span>Move Sharkie</span></div>
-        <div><img src="img/6.Botones/Key/Space Bar key.png"><span>Attack</span></div>`;
-    } else {
+    if (hasTouchEvents()) {
         return /* html */ `<div><img src="img/6.Botones/Key/arrow keys.png"><span>Move Sharkie</span></div>
         <div><div class="mobile-attack"><img class="mobile-attack" src="img/6.Botones/Key/ATTACK.png"></div><span>Attack</span></div>`;
+    } else {
+        return /* html */ `<div><img src="img/6.Botones/Key/wasd_keys.png"><span>Move Sharkie</span></div>
+        <div><img src="img/6.Botones/Key/Space Bar key.png"><span>Attack</span></div>`;
     }
 }
 
@@ -105,7 +105,7 @@ function renderStatusbar() {
  * @returns HTML
  */
 function renderActionButtons() {
-    if (navigator.userAgentData.mobile == true) {
+    if (hasTouchEvents()) {
         return /* html */ `
     <div class="game-buttons">
         <div class="move-buttons">
@@ -267,4 +267,34 @@ function exitFullscreen() {
     } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
     }
+}
+
+/**
+ * Checks whether the device is in portrait or landscape format
+ */
+function checkdeviceAlignment() {
+    if (hasTouchEvents() && window.matchMedia("(orientation: landscape)").matches) {
+        document.getElementById('device-alignment-info').classList.remove('d-none');
+    } else {
+        document.getElementById('device-alignment-info').classList.add('d-none');
+    }
+}
+
+/**
+ * close device alignment info
+ */
+function closeDeviceInfo() {
+    document.getElementById('device-alignment-info').classList.add('d-none');
+}
+
+
+/**
+ * Adds an event listener to respond to alignment changes
+ */
+window.addEventListener("orientationchange", function() {
+    checkdeviceAlignment();
+});
+
+function hasTouchEvents() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
 }
